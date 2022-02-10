@@ -1,11 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { ScheduleProvider } from "../../crawlerModule/schedule.provider";
+import { HSRefiner } from "../../refiner/HSRefiner";
 
 
 @Injectable()
 export class ApiService {
 
-  constructor (private readonly scheduleProvider : ScheduleProvider) {
+  constructor (private readonly scheduleProvider : ScheduleProvider,
+               private readonly refiner : HSRefiner) {
 
   }
   async doCrawl () {
@@ -13,9 +15,7 @@ export class ApiService {
 
     const schedules = await this.scheduleProvider.collect();
 
-    for (const sche of schedules){
-      console.log(sche)
-    }
+    this.refiner.refineInfo(schedules);
   }
 
 }
