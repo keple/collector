@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer';
-import { ScheduleInfo } from "../Model/ScheduleInfo";
+import { ScheduleInfo } from "../model/ScheduleInfo";
 
 export class ScheduleProvider {
 
