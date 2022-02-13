@@ -1,8 +1,15 @@
 export class ScheduleInfo {
+  get thumbnail() {
+    return this._thumbnail;
+  }
+
+  set thumbnail(value) {
+    this._thumbnail = value;
+  }
   private _date
   private _time
   private _name
-
+  private _thumbnail;
 
   get date() {
     return this._date;

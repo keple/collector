@@ -28,13 +28,14 @@ export class ScheduleProvider {
       }
       const handleTimeAndName = await item.$$('.thumbnail');
       for(const thumbnail of handleTimeAndName){
-        const imgSrc = await (await (await thumbnail.$('img')).getProperty('src')).jsonValue();
+        const thumbnailSrc = await (await (await thumbnail.$('img')).getProperty('src')).jsonValue();
         const time = await (await (await thumbnail.$('.datetime')).getProperty("innerText")).jsonValue();
         const name = await (await (await thumbnail.$('.name')).getProperty("innerText")).jsonValue();
         const inf = new ScheduleInfo();
         inf.date = await date.jsonValue();
         inf.time = time;
         inf.name = name;
+        inf.thumbnail = thumbnailSrc;
         scheInfo.push(inf);
       }
     }
