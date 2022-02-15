@@ -11,7 +11,11 @@ export class KafkaConfiguration {
       logLevel: logLevel.DEBUG,
       clientId : 'crawler',
       brokers : ['localhost:9092']
-    })
+    });
+
+    this.createTopic().then((result) => {
+      console.log(result);
+    });
   }
   //create topic
   async createTopic(): Promise<boolean>{

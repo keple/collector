@@ -5,12 +5,15 @@ export class ScheduleProvider {
 
   async init () {
     const browser = await puppeteer.launch({headless : false});
-    return await browser.newPage();
+    return {
+      browser : browser,
+      page : await browser.newPage()
+    };
 
   }
   async collect(){
     //create browser
-    const page = await this.init();
+    const {browser , page} = await this.init();
     // goto schedule url
     await page.goto(process.env.schedule_info_url);
     //parsing date
@@ -28,7 +31,7 @@ export class ScheduleProvider {
       }
       const handleTimeAndName = await item.$$('.thumbnail');
       for(const thumbnail of handleTimeAndName){
-        const thumbnailSrc = await (await (await thumbnail.$('img')).getProperty('src')).jsonValue();
+        const thumbnailSrc = await (await (await thumbnail.$$('img'))[1].getProperty('src')).jsonValue();
         const time = await (await (await thumbnail.$('.datetime')).getProperty("innerText")).jsonValue();
         const name = await (await (await thumbnail.$('.name')).getProperty("innerText")).jsonValue();
         const inf = new ScheduleInfo();
@@ -39,6 +42,7 @@ export class ScheduleProvider {
         scheInfo.push(inf);
       }
     }
+    await browser.close();
     return scheInfo;
   }
 }

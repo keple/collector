@@ -10,7 +10,7 @@ export class HSRefiner implements InfoRefiner<RefinedSchedule, ScheduleInfo>{
 
   refineInfo(source: Array<ScheduleInfo>): Array<RefinedSchedule> {
 
-    return source.map(this.refineFunction).filter((item)=>{return item!==undefined});
+    return source.map(this.refineFunction,this).filter((item)=>{return item!==undefined});
   }
   refineFunction (item) :RefinedSchedule {
     if(this.validate(item)){
