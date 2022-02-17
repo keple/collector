@@ -3,7 +3,7 @@ import { ScheduleProvider } from "../../crawlerModule/schedule.provider";
 import { HSRefiner } from "../../refiner/HSRefiner";
 import { KafkaConfiguration } from "../../kafka/kafka.configuration";
 import {encode} from 'utf8';
-
+import {logger} from "../../../winston.config";
 @Injectable()
 export class ApiService {
 
@@ -31,7 +31,7 @@ export class ApiService {
       }));
     }
     await Promise.all(promises).then((result) => {
-      console.log(result);
+      logger.debug(result)
     })
     await producer.disconnect();
   }
