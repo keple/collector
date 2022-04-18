@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer';
-import { ScheduleInfo } from "../model/ScheduleInfo";
+import { ScheduleInfo } from "../model/raw/ScheduleInfo";
 
 export class ScheduleProvider {
 
@@ -43,6 +43,7 @@ export class ScheduleProvider {
       }
     }
     await browser.close();
+
     return scheInfo;
   }
 }

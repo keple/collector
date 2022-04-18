@@ -1,6 +1,6 @@
 import { InfoRefiner } from "./InfoRefiner";
-import { RefinedSchedule } from "../model/RefinedSchedule";
-import { ScheduleInfo } from "../model/ScheduleInfo";
+import { RefinedSchedule } from "../model/refined/RefinedSchedule";
+import { ScheduleInfo } from "../model/raw/ScheduleInfo";
 import { Injectable } from "@nestjs/common";
 
 
