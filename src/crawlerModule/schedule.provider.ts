@@ -25,7 +25,7 @@ export class ScheduleProvider {
     for (const item of rowHandles) {
       const handleDate = await item.$('.navbar-inverse');
       if(handleDate!==undefined&& handleDate != null){
-        const datehandle = await handleDate.$('.holodule .navbar-text');
+        const datehandle = await handleDate.$(process.env.schedule_wrapper);
         date = await datehandle.getProperty("innerText");
         continue;
       }

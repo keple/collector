@@ -5,8 +5,12 @@ import { ApiService } from '../service/ApiService';
 export class ApiController {
   constructor(private readonly apiService: ApiService) {}
 
-  @Post("/requestCrawl")
-  async requestCrawl() {
-    return this.apiService.doCrawl();
+  @Post("/collectSchedule")
+  async collectSchedule() {
+    return this.apiService.collectSchedule();
+  }
+  @Post("/collectProduct")
+  async collectProduct () {
+    return this.apiService.collectProduct();
   }
 }
