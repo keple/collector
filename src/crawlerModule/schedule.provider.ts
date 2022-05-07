@@ -1,19 +1,17 @@
 import * as puppeteer from 'puppeteer';
 import { ScheduleInfo } from "../model/raw/ScheduleInfo";
+import { PuppeteerInitializer } from './puppeteerInitializer';
+import { logger } from '../../winston.config';
 
-export class ScheduleProvider {
+export class ScheduleProvider  extends PuppeteerInitializer{
 
-  async init () {
-    const browser = await puppeteer.launch({headless : false});
-    return {
-      browser : browser,
-      page : await browser.newPage()
-    };
-
-  }
   async collect(){
     //create browser
     const {browser , page} = await this.init();
+    await page.setViewport({
+      width:1920,
+      height:1080
+    })
     // goto schedule url
     await page.goto(process.env.schedule_info_url);
     //parsing date
@@ -31,15 +29,31 @@ export class ScheduleProvider {
       }
       const handleTimeAndName = await item.$$('.thumbnail');
       for(const thumbnail of handleTimeAndName){
-        const thumbnailSrc = await (await (await thumbnail.$$('img'))[1].getProperty('src')).jsonValue();
-        const time = await (await (await thumbnail.$('.datetime')).getProperty("innerText")).jsonValue();
-        const name = await (await (await thumbnail.$('.name')).getProperty("innerText")).jsonValue();
-        const inf = new ScheduleInfo();
-        inf.date = await date.jsonValue();
-        inf.time = time;
-        inf.name = name;
-        inf.thumbnail = thumbnailSrc;
-        scheInfo.push(inf);
+        try{
+          //find thumbnail img
+          const imgsInThumbnail = await thumbnail.$$('img');
+          //img index 1 is main image
+          const mainImg = await imgsInThumbnail[1].getProperty('src');
+          const thumbnailSrc = await mainImg.jsonValue();
+
+          //find time in thumbnail
+          const timeInThumbnail = await thumbnail.$('.datetime');
+          const timeValueHandle = await timeInThumbnail.getProperty('innerText');
+          const time = await timeValueHandle.jsonValue();
+
+          //find name in thumbnail
+          const nameInThumbnailHandle = await thumbnail.$('.name');
+          const nameValueHandle = await nameInThumbnailHandle.getProperty('innerText');
+          const name = await nameValueHandle.jsonValue();
+          const inf = new ScheduleInfo();
+          inf.date = await date.jsonValue();
+          inf.time = time;
+          inf.name = name;
+          inf.thumbnail = thumbnailSrc;
+          scheInfo.push(inf);
+        }catch(error){
+          logger.error(`cannot find informations in thumbnail class `);
+        }
       }
     }
     await browser.close();

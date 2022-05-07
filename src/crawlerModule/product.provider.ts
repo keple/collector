@@ -1,16 +1,9 @@
 import * as puppeteer from "puppeteer";
 import { Product } from '../model/raw/Product';
+import { PuppeteerInitializer } from './puppeteerInitializer';
 
-export class ProductProvider {
+export class ProductProvider extends PuppeteerInitializer{
 
-  async init () {
-    const browser = await puppeteer.launch({headless : false});
-    return {
-      browser : browser,
-      page : await browser.newPage()
-    };
-
-  }
 
   async collect  () {
     const {browser , page} = await this.init();
